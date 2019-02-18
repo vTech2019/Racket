@@ -1,0 +1,48 @@
+;Scheme
+
+(define (sample)
+(rejection-query
+ (define E (flip 0.002))
+ (define B (flip 0.001))
+ (define A (or (and E (flip 0.29)) 
+            (and B (flip 0.94)) 
+            (flip 0.001)))
+ A
+ (or B E)
+))
+
+(multinomial '(0 1 2) '(1 1 1))
+
+(define (sample_family)
+(rejection-query
+ (define boy_1 (flip))
+ (define boy_2 (flip))
+ (and boy_1 boy_2) 
+ (or boy_1 boy_2) 
+))
+
+(define n (random-integer 3))
+
+(cond 
+     [(= n 0) '(true false false)]
+     [(= n 1) '(false true false)]
+     [(= n 2) '(false false true)])
+
+
+(define (sample_monte_hall)
+(rejection-query
+  (define goat_1 (flip 0.333))
+  (define goat_2 (flip 0.333))
+  (define auto (flip 0.333))
+  auto
+))
+; мультиномиальное распределение
+(define (_sample_monte_hall)
+(rejection-query
+  (define player (random-integer 3))
+  (define prize (random-integer 3))
+  (define host (random-integer 3))
+  (= player prize)
+))
+
+(foldl + 0 (map (lambda (x) (if x 1 0)) (repeat 100 _sample_monte_hall)))
